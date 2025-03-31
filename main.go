@@ -51,10 +51,27 @@ func syncHandler(w http.ResponseWriter, r *http.Request) {
 	yt := youtube.NewYouTubeClient(youtubeAPIKey)
 	ytPlaylistID := yt.CreatePlaylist("Migrada do Spotify")
 
+	var addedTracks []string
+
 	for _, track := range tracks {
 		log.Println("Adicionando:", track)
 		yt.AddTrackToPlaylist(ytPlaylistID, track)
+		addedTracks = append(addedTracks, track)
 	}
+
+	// Renderiza o resultado no template
+	tmpl := template.Must(template.ParseFiles("templates/result.html"))
+	data := struct {
+		PlaylistID   string
+		Tracks       []string
+		Total        int
+	}{
+		PlaylistID: playlistID,
+		Tracks:     addedTracks,
+		Total:      len(addedTracks),
+	}
+
+	tmpl.Execute(w, data)
 
 	w.Write([]byte("✅ Playlist criada no YouTube com sucesso!"))
 }
