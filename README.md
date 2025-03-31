@@ -109,8 +109,7 @@ script-spotify-youtube/
 
 ## 📄 Licença
 
-MIT © [vinnieoh](https://github.com/vinnieoh)
-
+[MIT ©](./LICENSE)
 
 
 ## 💡 Dica
