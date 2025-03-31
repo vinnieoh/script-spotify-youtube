@@ -2,15 +2,81 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Sincronizar Playlist</title>
+  <title>Sincronizar Playlist do Spotify</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1DB954, #191414);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #121212;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #1DB954;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      background-color: #2a2a2a;
+      color: #fff;
+    }
+
+    button {
+      background-color: #1DB954;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #17a44c;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h2>Digite o ID da Playlist do Spotify</h2>
-  <form action="/sync" method="POST">
-    <label for="playlistID">Playlist ID:</label>
-    <input type="text" name="playlistID" required>
-    <br><br>
-    <button type="submit">Sincronizar com YouTube</button>
-  </form>
+  <div class="container">
+    <h2>Sincronizar Playlist do Spotify</h2>
+    <form action="/sync" method="POST">
+      <label for="playlistID">ID da Playlist:</label>
+      <input type="text" name="playlistID" id="playlistID" placeholder="Ex: 37i9dQZF1DXcBWIGoYBM5M" required>
+      <button type="submit">Sincronizar com YouTube</button>
+    </form>
+  </div>
 </body>
 </html>

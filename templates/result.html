@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Resultado da Sincronização</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #fff;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #1DB954;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #2a2a2a;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 6px;
+    }
+
+    .success {
+      background-color: #1DB954;
+      color: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    a {
+      color: #1DB954;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="success">
+    ✅ <strong>Playlist sincronizada com sucesso!</strong><br>
+    Foram adicionadas {{.Total}} músicas da playlist <code>{{.PlaylistID}}</code>.
+  </div>
+
+  <h1>Músicas adicionadas:</h1>
+  <ul>
+    {{range .Tracks}}
+      <li>{{.}}</li>
+    {{end}}
+  </ul>
+
+  <br><a href="/">🔙 Voltar</a>
+</body>
+</html>

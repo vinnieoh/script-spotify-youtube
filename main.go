@@ -38,7 +38,6 @@ func syncHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Variáveis fixas só pra teste (você pode usar config/env)
 	cfg := config.EnvConfig()
 
 	spotifyClientID := cfg.SPOTIFY_CLIENT_ID
