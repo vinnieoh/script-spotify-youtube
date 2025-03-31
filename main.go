@@ -1,7 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"log"
+	"net/http"
+	"text/template"
 
 	"github.com/vinnieoh/script-spotify-youtube/app/config"
 	"github.com/vinnieoh/script-spotify-youtube/app/spotify"
@@ -12,29 +14,48 @@ import (
 
 func main(){
 
+	http.HandleFunc("/", formHandler)
+	http.HandleFunc("/sync", syncHandler)
+	log.Println("Servidor rodando em http://localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
+	
+}
+
+func formHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("templates/index.html"))
+	tmpl.Execute(w, nil)
+}
+
+func syncHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	playlistID := r.FormValue("playlistID")
+	if playlistID == "" {
+		http.Error(w, "ID da playlist é obrigatório", http.StatusBadRequest)
+		return
+	}
+
+	// Variáveis fixas só pra teste (você pode usar config/env)
 	cfg := config.EnvConfig()
 
 	spotifyClientID := cfg.SPOTIFY_CLIENT_ID
 	spotifyClientSecret := cfg.SPOTIFY_CLIENT_SECRET
-	spotifyPlaylistID := cfg.SPOTIFY_PLAYLIST_ID
 	youtubeAPIKey := cfg.YOUTUBE_API_KEY
 
-
-	// Spotify
+	// Lógica de sincronização
 	sp := spotify.NewSpotifyClient(spotifyClientID, spotifyClientSecret)
-	tracks := sp.GetTrackNamesFromPlaylist(spotifyPlaylistID)
+	tracks := sp.GetTrackNamesFromPlaylist(playlistID)
 
-	// YouTube
 	yt := youtube.NewYouTubeClient(youtubeAPIKey)
-	playlistID := yt.CreatePlaylist("Playlist migrada do Spotify")
+	ytPlaylistID := yt.CreatePlaylist("Migrada do Spotify")
 
 	for _, track := range tracks {
-		fmt.Println("Adicionando:", track)
-		yt.AddTrackToPlaylist(playlistID, track)
+		log.Println("Adicionando:", track)
+		yt.AddTrackToPlaylist(ytPlaylistID, track)
 	}
 
-	fmt.Println("✅ Playlist criada com sucesso!")
-	
-
-
+	w.Write([]byte("✅ Playlist criada no YouTube com sucesso!"))
 }
