@@ -10,15 +10,13 @@ import (
 	"github.com/vinnieoh/script-spotify-youtube/app/youtube"
 )
 
-
-
-func main(){
+func main() {
 
 	http.HandleFunc("/", formHandler)
 	http.HandleFunc("/sync", syncHandler)
-	log.Println("Servidor rodando em http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
-	
+	log.Println("Servidor rodando em http://localhost:8000")
+	log.Fatal(http.ListenAndServe(":8000", nil))
+
 }
 
 func formHandler(w http.ResponseWriter, r *http.Request) {
@@ -43,12 +41,13 @@ func syncHandler(w http.ResponseWriter, r *http.Request) {
 	spotifyClientID := cfg.SPOTIFY_CLIENT_ID
 	spotifyClientSecret := cfg.SPOTIFY_CLIENT_SECRET
 	youtubeAPIKey := cfg.YOUTUBE_API_KEY
+	youtubeClientId := cfg.YOUTUBE_CLIENT_ID
 
 	// Lógica de sincronização
 	sp := spotify.NewSpotifyClient(spotifyClientID, spotifyClientSecret)
 	tracks := sp.GetTrackNamesFromPlaylist(playlistID)
 
-	yt := youtube.NewYouTubeClient(youtubeAPIKey)
+	yt := youtube.NewYouTubeClientOAuth(youtubeClientId, youtubeAPIKey)
 	ytPlaylistID := yt.CreatePlaylist("Migrada do Spotify")
 
 	var addedTracks []string
@@ -62,9 +61,9 @@ func syncHandler(w http.ResponseWriter, r *http.Request) {
 	// Renderiza o resultado no template
 	tmpl := template.Must(template.ParseFiles("templates/result.html"))
 	data := struct {
-		PlaylistID   string
-		Tracks       []string
-		Total        int
+		PlaylistID string
+		Tracks     []string
+		Total      int
 	}{
 		PlaylistID: playlistID,
 		Tracks:     addedTracks,

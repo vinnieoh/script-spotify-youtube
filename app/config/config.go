@@ -10,7 +10,7 @@ import (
 type Config struct {
 	SPOTIFY_CLIENT_ID     string
 	SPOTIFY_CLIENT_SECRET string
-	SPOTIFY_PLAYLIST_ID   string
+	YOUTUBE_CLIENT_ID   string
 	YOUTUBE_API_KEY       string
 }
 
@@ -24,11 +24,11 @@ func EnvConfig() *Config {
 
 	cfg.SPOTIFY_CLIENT_ID = os.Getenv("SPOTIFY_CLIENT_ID")
 	cfg.SPOTIFY_CLIENT_SECRET = os.Getenv("SPOTIFY_CLIENT_SECRET")
-	cfg.SPOTIFY_PLAYLIST_ID = os.Getenv("SPOTIFY_PLAYLIST_ID")
+	cfg.YOUTUBE_CLIENT_ID = os.Getenv("YOUTUBE_CLIENT_ID")
 	cfg.YOUTUBE_API_KEY = os.Getenv("YOUTUBE_API_KEY")
 
 	if cfg.SPOTIFY_CLIENT_ID == "" || cfg.SPOTIFY_CLIENT_SECRET == "" || 
-		cfg.SPOTIFY_PLAYLIST_ID == "" || cfg.YOUTUBE_API_KEY == "" {
+		cfg.YOUTUBE_API_KEY == "" || cfg.YOUTUBE_CLIENT_ID == "" {
 
 		log.Fatal("Variáveis de ambiente não definidas.")
 	}

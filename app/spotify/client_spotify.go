@@ -27,7 +27,6 @@ func NewSpotifyClient(clientID, clientSecret string) *SpotifyClient {
 		log.Fatalf("Erro ao gerar token Spotify: %v", err)
 	}
 
-	//httpClient := config.Client(ctx)
 	client := spotify.Authenticator{}.NewClient(token)
 	return &SpotifyClient{client: &client}
 }
